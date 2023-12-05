@@ -19,6 +19,11 @@ module InstMemory (
         ifun  = instruction[75:72]; // 4 bits
         rA    = instruction[71:68]; // 4 bits
         rB    = instruction[67:64]; // 4 bits
-        valC  = instruction[63:0]; // 64 bits
+
+        case (icode)
+            4'd3, 4'd4, 4'd5: valC = instruction[63:0]; // irmovq, rmmovq, mrmovq
+            4'd7, 4'd8: valC = instruction[71:8]; // jmp, jXX, call
+            default: valC = {64{1'b0}};
+        endcase
     end
 endmodule

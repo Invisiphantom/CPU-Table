@@ -8,7 +8,8 @@ module ALU_A (
         case (icode)
             4'h3, 4'h4, 4'h5: aluA = valC;
             4'h2, 4'h6: aluA = valA;
-            default: aluA = {64{1'b0}};
+            4'h8, 4'h9, 4'hA, 4'hB: aluA = valA;
+            default: aluA = aluA;
         endcase
     end
 endmodule

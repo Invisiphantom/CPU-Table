@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 import os
+import shutil
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 test_path = "./test"
-output_path = "./Y86-output"
 yo_files = os.listdir(test_path)
+
+output_path = "./Y86-output"
+# 清空output_path文件夹中的内容
+shutil.rmtree(output_path)
+os.mkdir(output_path)
 
 for yo_file in yo_files:
     with open(os.path.join(test_path, yo_file), "r") as yo_file_IO:

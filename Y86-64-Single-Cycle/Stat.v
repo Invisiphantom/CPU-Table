@@ -3,14 +3,13 @@ module Stat (
     input instr_valid,
     input imem_error,
     input dmem_error,
-    output reg [1:0] stat
+    output reg [2:0] stat // 1: AOK, 2: HLT, 3: ADR, 4: INS
 );
-    initial stat = 2'h1;
+    initial stat = 3'b001;
     always @(icode) begin
         #1;
-        case (icode)
-            4'h0: stat <= 2'h2;
-            default: stat <= 2'h1;
-        endcase
+        if (icode == 4'h0) stat <= 3'h2;
+        else if (dmem_error == 1'b1) stat <= 3'h3;
+        else stat <= stat;
     end
 endmodule

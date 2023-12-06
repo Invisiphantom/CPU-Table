@@ -7,6 +7,7 @@ module arch (
     wire [63:0] pValC;
     wire [63:0] pValP;
     wire [63:0] pValM;
+    wire [2:0] stat;
     wire [63:0] PCaddress;
     PC u_PC (
         .clk      (clk),
@@ -15,6 +16,7 @@ module arch (
         .pValC    (pValC),
         .pValP    (pValP),
         .pValM    (pValM),
+        .stat     (stat),
         .PCaddress(PCaddress)
     );
 
@@ -27,6 +29,7 @@ module arch (
     assign pValC  = valC;
     InstMemory u_InstMemory (
         .PCaddress(PCaddress),
+        .stat     (stat),
         .icode    (icode),
         .ifun     (ifun),
         .rA       (rA),
@@ -104,6 +107,7 @@ module arch (
 
     wire ZF, SF, OF;
     ALU u_ALU (
+        .icode (icode),
         .aluFun(aluFun),
         .aluA  (aluA),
         .aluB  (aluB),
@@ -144,16 +148,18 @@ module arch (
         .memData(memData)
     );
 
+    wire dmem_error;
     Mem u_Mem (
-        .memWrite(memWrite),
-        .memRead (memRead),
-        .memAddr (memAddr),
-        .memData (memData),
-        .valM    (valM)
+        .memWrite  (memWrite),
+        .memRead   (memRead),
+        .memAddr   (memAddr),
+        .memData   (memData),
+        .valM      (valM),
+        .dmem_error(dmem_error)
     );
 
-    wire instr_valid, imem_error, dmem_error;
-    wire [1:0] stat;
+    wire instr_valid, imem_error;
+
     Stat u_Stat (
         .icode      (icode),
         .instr_valid(instr_valid),
@@ -185,6 +191,7 @@ module arch_tb;
             clk = 1;
             #5;
         end
+        $finish;
     end
 
     initial begin

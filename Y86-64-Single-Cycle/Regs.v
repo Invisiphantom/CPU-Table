@@ -25,6 +25,23 @@ module Regs (
     output [63:0] r14
 );
     reg [63:0] Register[0:15];
+    initial begin
+        Register[0]  = 64'h0;
+        Register[1]  = 64'h0;
+        Register[2]  = 64'h0;
+        Register[3]  = 64'h0;
+        Register[4]  = 64'h0;
+        Register[5]  = 64'h0;
+        Register[6]  = 64'h0;
+        Register[7]  = 64'h0;
+        Register[8]  = 64'h0;
+        Register[9]  = 64'h0;
+        Register[10] = 64'h0;
+        Register[11] = 64'h0;
+        Register[12] = 64'h0;
+        Register[13] = 64'h0;
+        Register[14] = 64'h0;
+    end
 
     always @(*) begin
         case (icode)
@@ -32,21 +49,32 @@ module Regs (
                 valA <= Register[rA];
                 valB <= Register[rB];
             end
-            4'h8, 4'h9, 4'hA, 4'hB: valA <= Register[4];  // %rsp
+            4'h8, 4'h9, 4'hA, 4'hB: begin
+                valA <= Register[4];  // %rsp
+                valB <= Register[4];  // %rsp
+            end
             default: begin
-                valA <= {64{1'bx}};
-                valB <= {64{1'bx}};
+                valA <= valA;
+                valB <= valB;
             end
         endcase
     end
 
     always @(posedge clk) begin
         case (icode)
-            4'h2: Register[rB] <= valE;  // rrmovq, cmovXX
+            4'h2: begin
+                if (Cnd == 1'b1) Register[rB] <= valE;  // rrmovq, cmovXX
+            end
             4'h3: Register[rB] <= valE;  // irmovq
             4'h5: Register[rA] <= valM;  // mrmovq
             4'h6: Register[rB] <= valE;  // addq, subq, andq, xorq
-            4'hB: Register[rA] <= valM;  // popq
+            4'h8: Register[4] <= valE;  // call
+            4'h9: Register[4] <= valE;  // ret
+            4'hA: Register[4] <= valE;  // pushq
+            4'hB: begin  // popq
+                Register[4]  <= valE;
+                Register[rA] <= valM;
+            end
         endcase
     end
 

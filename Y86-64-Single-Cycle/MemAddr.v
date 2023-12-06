@@ -8,6 +8,7 @@ module MemAddr (
         case (icode)
             4'h4, 4'h5, 4'h8, 4'hA: memAddr = valE;
             4'h9, 4'hB: memAddr = valA;
+            default: memAddr = 64'hxxxxxxxxxxxxxxxx;
         endcase
     end
 endmodule

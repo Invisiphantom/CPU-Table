@@ -49,6 +49,7 @@ module arch (
     wire [63:0] valA;
     wire [63:0] valB;
     assign pCnd = Cnd;
+    assign pValM = valM;
     Regs u_Regs (
         .clk  (clk),
         .Cnd  (Cnd),
@@ -138,12 +139,15 @@ endmodule
 
 
 module arch_tb;
-    reg clk;
+    reg  clk;
 
-    arch arch_inst (.clk(clk));
+    arch arch_inst (
+        .clk(clk)
+    );
 
     initial begin
-        repeat (25) begin
+        $monitor("%x", arch_tb.arch_inst.PCaddress);
+        repeat (100) begin
             clk = 0;
             #5;
             clk = 1;

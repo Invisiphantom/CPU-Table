@@ -9,10 +9,10 @@ module ALU (
 );
     always @(*) begin
         case (aluFun)
-            2'b00: valE = aluA + aluB;
+            2'b00: valE = aluB + aluA;
             2'b01: valE = aluB - aluA;
-            2'b10: valE = aluA & aluB;
-            2'b11: valE = aluA ^ aluB;
+            2'b10: valE = aluB & aluA;
+            2'b11: valE = aluB ^ aluA;
         endcase
     end
 

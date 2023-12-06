@@ -40,6 +40,7 @@ module InstMemory (
         endcase
     end
 
+    // 小端法读取数据
     assign valC = {
         valC_litend[7:0],
         valC_litend[15:8],

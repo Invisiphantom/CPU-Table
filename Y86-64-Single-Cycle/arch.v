@@ -48,8 +48,9 @@ module arch (
     wire [63:0] valM;
     wire [63:0] valA;
     wire [63:0] valB;
-    assign pCnd = Cnd;
+    assign pCnd  = Cnd;
     assign pValM = valM;
+    wire signed [63:0] rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14;
     Regs u_Regs (
         .clk  (clk),
         .Cnd  (Cnd),
@@ -59,8 +60,24 @@ module arch (
         .valE (valE),
         .valM (valM),
         .valA (valA),
-        .valB (valB)
+        .valB (valB),
+        .rax  (rax),
+        .rcx  (rcx),
+        .rdx  (rdx),
+        .rbx  (rbx),
+        .rsp  (rsp),
+        .rbp  (rbp),
+        .rsi  (rsi),
+        .rdi  (rdi),
+        .r8   (r8),
+        .r9   (r9),
+        .r10  (r10),
+        .r11  (r11),
+        .r12  (r12),
+        .r13  (r13),
+        .r14  (r14)
     );
+
 
 
     wire [1:0] aluFun;
@@ -134,19 +151,34 @@ module arch (
         .memData (memData),
         .valM    (valM)
     );
+
+    wire instr_valid, imem_error, dmem_error;
+    wire [1:0] stat;
+    Stat u_Stat (
+        .icode      (icode),
+        .instr_valid(instr_valid),
+        .imem_error (imem_error),
+        .dmem_error (dmem_error),
+        .stat       (stat)
+    );
 endmodule
 
 
 
 module arch_tb;
-    reg  clk;
+    reg clk;
 
-    arch arch_inst (
-        .clk(clk)
-    );
+    arch arch_inst (.clk(clk));
 
     initial begin
-        $monitor("%x", arch_tb.arch_inst.PCaddress);
+        $monitor("%d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+                 arch_tb.arch_inst.PCaddress, arch_tb.arch_inst.rax, arch_tb.arch_inst.rcx,
+                 arch_tb.arch_inst.rdx, arch_tb.arch_inst.rbx, arch_tb.arch_inst.rsp,
+                 arch_tb.arch_inst.rbp, arch_tb.arch_inst.rsi, arch_tb.arch_inst.rdi,
+                 arch_tb.arch_inst.r8, arch_tb.arch_inst.r9, arch_tb.arch_inst.r10,
+                 arch_tb.arch_inst.r11, arch_tb.arch_inst.r12, arch_tb.arch_inst.r13,
+                 arch_tb.arch_inst.r14, arch_tb.arch_inst.ZF, arch_tb.arch_inst.SF,
+                 arch_tb.arch_inst.OF, arch_tb.arch_inst.stat);
         repeat (100) begin
             clk = 0;
             #5;

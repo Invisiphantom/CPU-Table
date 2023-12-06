@@ -7,6 +7,8 @@ module ALU (
     output SF,
     output OF
 );
+    initial valE = 64'b0;
+
     always @(*) begin
         case (aluFun)
             2'b00: valE = aluB + aluA;

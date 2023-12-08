@@ -12,14 +12,8 @@ module InstMemory (
     // 只能用绝对路径
     initial $readmemh("/home/ethan/CPU-Table/Y86-64-Single-Cycle/ROM.txt", inst_mem);
 
-    reg Halt;
-    initial Halt = 1'b0;
-    always @(stat) begin
-        if (stat != 3'b001) Halt <= 1'b1;
-    end
-
     wire [79:0] instruction;
-    assign instruction[79:0] = (Halt == 1'b0) ? {
+    assign instruction[79:0] = (stat == 3'b001) ? {
         inst_mem[PCaddress],
         inst_mem[PCaddress+1],
         inst_mem[PCaddress+2],

@@ -49,8 +49,12 @@ module Regs (
                 valA <= Register[rA];
                 valB <= Register[rB];
             end
-            4'h8, 4'h9, 4'hA, 4'hB: begin
+            4'h8, 4'h9, 4'hB: begin
                 valA <= Register[4];  // %rsp
+                valB <= Register[4];  // %rsp
+            end
+            4'hA: begin  // pushq
+                valA <= Register[rA];  // rA
                 valB <= Register[4];  // %rsp
             end
             default: begin

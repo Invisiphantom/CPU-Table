@@ -11,14 +11,8 @@ module PC (
 
     initial PCaddress = {64{1'b0}};
 
-    reg Halt;
-    initial Halt = 1'b0;
-    always @(stat) begin
-        if (stat != 3'b001) Halt <= 1'b1;
-    end
-
     always @(posedge clk) begin
-        if (Halt == 1'b1) PCaddress <= PCaddress;
+        if (stat != 3'b001) PCaddress <= PCaddress;
         else
             case (pIcode)
                 4'h0: PCaddress <= pValP;  // halt

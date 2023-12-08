@@ -24,8 +24,10 @@ with open(yaml_file, "w") as yaml_content:
     for i in range(2, len(content)):
         line = content[i].split()
         if line[0] == "mem":
+            if int(line[2]) == 0:
+                continue
             Mem[line[1]] = line[2]
-        
+
         if line[0] != "mem":
             State["PC"] = line[0]
             State["rax"] = line[1]
@@ -68,7 +70,7 @@ with open(yaml_file, "w") as yaml_content:
             # 按照key对应的数字从小到大输出
             for key in sorted(Mem.keys(), key=lambda x: int(x)):
                 yaml_content.write("    " + key + ": " + Mem[key] + "\n")
-            
+
             yaml_content.write("  CC:\n")
             yaml_content.write("    ZF: " + State["ZF"] + "\n")
             yaml_content.write("    SF: " + State["SF"] + "\n")

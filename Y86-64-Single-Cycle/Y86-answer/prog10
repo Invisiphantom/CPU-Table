@@ -58,7 +58,7 @@
     rcx: 0
     rdx: 0
     rbx: 0
-    rsp: -8
+    rsp: 0
     rbp: 0
     rsi: 0
     rdi: 0

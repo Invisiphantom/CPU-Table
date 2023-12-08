@@ -107,6 +107,7 @@ module arch (
 
     wire ZF, SF, OF;
     ALU u_ALU (
+        .clk   (clk),
         .icode (icode),
         .aluFun(aluFun),
         .aluA  (aluA),

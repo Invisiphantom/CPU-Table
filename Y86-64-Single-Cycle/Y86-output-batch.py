@@ -29,3 +29,5 @@ for yo_file in yo_files:
         
     with open(os.path.join(output_path, yo_file.replace(".yo", ".yml")), "w") as yml_file:
         yml_file.write("".join(yml_content))
+
+os.system('python3 -u Y86-output-diff.py')
